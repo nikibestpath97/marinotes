@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correspondence — St Clement</title>
+<meta name="description" content="Saved replies for dining and rooms.">
+<meta name="theme-color" content="#23281F">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%2323281F'/><circle cx='38' cy='44' r='16' fill='%23C3541C'/><circle cx='63' cy='60' r='13' fill='%23F5D547'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hanken+Grotesk:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   ST CLEMENT — CORRESPONDENCE DESK
+   Grounding: "Oranges and lemons, say the bells of St Clement's."
+   Paper + ink + clementine + a lemon highlighter for the blanks.
+   All colour is semantic; components never hardcode a hex.
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --paper:#F7F5EF;
+  --sheet:#FDFCF8;
+  --ink:#23281F;
+  --ink-60:#5C6154;
+  --ink-30:#A9AC9E;
+  --rule:#DAD5C6;
+  --rule-soft:#E7E3D6;
+
+  --clem:#C3541C;          /* clementine — the one action colour   */
+  --clem-ink:#FFFFFF;
+  --lemon:#F5D547;         /* highlighter for [fill-ins]           */
+  --lemon-ink:#3D3306;
+
+  --danger:#9A2B1F;
+  --danger-ink:#FFFFFF;
+  --overlay:rgba(35,40,31,.5);
+  --press:var(--ink);      /* hard offset shadow colour            */
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:36px; --s7:56px;
+  --r:3px;
+
+  --display:"Marcellus", "Iowan Old Style", Georgia, serif;
+  --ui:"Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --type:"Courier Prime", "Courier New", monospace;
+
+  --t:160ms cubic-bezier(.4,0,.2,1);
+  --z-toast:30; --z-dialog:50;
+}
+[data-theme="dark"]{
+  --paper:#181B14;
+  --sheet:#20241B;
+  --ink:#ECE9DC;
+  --ink-60:#A8AB9A;
+  --ink-30:#5E6253;
+  --rule:#3A3E31;
+  --rule-soft:#2C2F25;
+
+  --clem:#E8813F;
+  --clem-ink:#241205;
+  --lemon:#E3C93F;
+  --lemon-ink:#2E2704;
+
+  --danger:#E06B5D;
+  --danger-ink:#2A0A06;
+  --overlay:rgba(0,0,0,.62);
+  --press:#000000;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--ui);
+  font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  padding:0 var(--s4) var(--s7);
+  transition:background var(--t), color var(--t);
+}
+.wrap{max-width:1280px;margin:0 auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:where(button,a,input,textarea,select,[tabindex]):focus-visible{
+  outline:2px solid var(--clem);outline-offset:2px;
+}
+button{font:inherit;cursor:pointer;color:inherit}
+
+/* ── masthead ──────────────────────────────────────────────── */
+.masthead{
+  padding:var(--s6) 0 0;
+}
+.mast-row{display:flex;align-items:baseline;gap:var(--s4);flex-wrap:wrap}
+h1{
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(26px,4.5vw,38px);
+  letter-spacing:.01em;
+  margin:0;
+}
+.tally{
+  font-family:var(--type);font-size:12px;color:var(--ink-60);
+  min-width:11ch;
+}
+.mast-tools{margin-left:auto;display:flex;gap:var(--s2);align-items:center}
+
+/* double rule under the masthead — stationery, not a drop shadow */
+.rulebar{
+  margin-top:var(--s4);
+  border-top:2px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  height:4px;
+}
+
+/* ── register tabs (the workspace switch) ──────────────────── */
+.registers{
+  display:flex;gap:var(--s2);
+  margin-top:var(--s5);
+}
+.register{
+  appearance:none;
+  font-family:var(--display);
+  font-size:17px;letter-spacing:.02em;
+  background:transparent;
+  color:var(--ink-60);
+  border:1px solid var(--rule);
+  border-bottom-color:transparent;
+  border-radius:var(--r) var(--r) 0 0;
+  padding:12px 22px 10px;
+  min-height:48px;
+  position:relative;
+  top:1px;
+  transition:color var(--t), background var(--t);
+}
+.register:hover{color:var(--ink)}
+.register[aria-selected="true"]{
+  background:var(--sheet);
+  color:var(--ink);
+  border-color:var(--ink);
+  border-bottom-color:var(--sheet);
+}
+.register .count{
+  font-family:var(--type);font-size:11px;
+  color:var(--ink-60);
+  margin-left:8px;
+}
+.register-shelf{border-bottom:1px solid var(--ink)}
+
+/* ── desk (everything under the tabs sits on the sheet) ────── */
+.desk{
+  background:var(--sheet);
+  border:1px solid var(--ink);
+  border-top:0;
+  padding:var(--s5) var(--s5) var(--s6);
+  transition:background var(--t);
+}
+@keyframes sheetin{from{opacity:0;transform:translateY(6px)}}
+.desk.turn .grid{animation:sheetin 260ms cubic-bezier(.2,.7,.3,1)}
+
+/* ── toolbar ───────────────────────────────────────────────── */
+.toolbar{display:flex;gap:var(--s3);align-items:center;flex-wrap:wrap}
+.search{
+  flex:1;min-width:230px;
+  display:flex;align-items:center;gap:var(--s3);
+  background:var(--paper);
+  border:1px solid var(--ink);
+  border-radius:var(--r);
+  padding:0 var(--s3);
+}
+.search:focus-within{box-shadow:2px 2px 0 var(--press)}
+.search svg{width:17px;height:17px;flex:none;color:var(--ink-60)}
+#q{
+  flex:1;min-height:46px;border:0;outline:0;background:transparent;
+  font-family:var(--type);font-size:14px;color:var(--ink);
+}
+#q::placeholder{color:var(--ink-30)}
+.kbd{
+  font-family:var(--type);font-size:11px;color:var(--ink-60);
+  border:1px solid var(--rule);border-radius:var(--r);
+  padding:3px 7px;
+}
+
+/* ── buttons: set type, letterpress press ──────────────────── */
+.btn{
+  min-height:46px;
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  font-weight:600;font-size:14px;letter-spacing:.01em;
+  border-radius:var(--r);
+  padding:0 var(--s4);
+  border:1px solid var(--ink);
+  background:var(--sheet);
+  color:var(--ink);
+  box-shadow:2px 2px 0 var(--press);
+  transition:transform var(--t), box-shadow var(--t), background var(--t);
+}
+.btn:hover{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--press)}
+.btn:active{transform:translate(2px,2px);box-shadow:none}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:var(--clem);border-color:var(--clem);color:var(--clem-ink)}
+[data-theme="light"] .btn-primary,.btn-primary{--press:var(--ink)}
+.btn-danger{background:var(--danger);border-color:var(--danger);color:var(--danger-ink)}
+.btn-quiet{box-shadow:none;border-color:var(--rule)}
+.btn-quiet:hover{transform:none;border-color:var(--ink)}
+
+.iconbtn{
+  min-width:46px;min-height:46px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid var(--rule);
+  border-radius:var(--r);
+  transition:border-color var(--t), background var(--t);
+}
+.iconbtn:hover{border-color:var(--ink)}
+.iconbtn svg{width:19px;height:19px}
+
+/* ── index chips ───────────────────────────────────────────── */
+.chips{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s4)}
+.chip{
+  min-height:38px;
+  display:inline-flex;align-items:center;gap:var(--s2);
+  font-size:13px;font-weight:600;letter-spacing:.02em;
+  border:1px solid var(--rule);
+  background:transparent;color:var(--ink-60);
+  padding:0 var(--s3);
+  border-radius:var(--r);
+  transition:border-color var(--t), color var(--t), background var(--t);
+}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip[aria-pressed="true"]{
+  background:var(--ink);border-color:var(--ink);color:var(--sheet);
+}
+
+/* ── letters ───────────────────────────────────────────────── */
+.grid{margin-top:var(--s5);columns:350px;column-gap:var(--s4)}
+.grid.is-empty{columns:1}
+
+.card{
+  break-inside:avoid;
+  position:relative;
+  display:flex;flex-direction:column;
+  margin:0 0 var(--s4);
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:var(--r);
+  padding:var(--s4) var(--s4) var(--s3);
+  overflow:hidden;
+  transition:border-color var(--t), box-shadow var(--t);
+  animation:rise 300ms cubic-bezier(.2,.7,.3,1) backwards;
+}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.card:hover{border-color:var(--ink);box-shadow:2px 2px 0 var(--press)}
+
+.meta{display:flex;align-items:flex-start;gap:var(--s2)}
+.headings{min-width:0}
+.cat{
+  display:flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--spine);
+}
+.cat::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--spine);flex:none}
+.label{
+  display:block;
+  font-family:var(--display);
+  font-size:17px;line-height:1.25;
+  margin-top:5px;
+}
+/* single-template categories: the category IS the title */
+.label-dot{
+  display:flex;align-items:center;gap:9px;
+  margin-top:2px;
+}
+.label-dot::before{
+  content:"";width:9px;height:9px;border-radius:50%;
+  background:var(--spine);flex:none;
+}
+.actions{display:flex;gap:2px;margin-left:auto}
+.act{
+  min-width:36px;min-height:36px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:0;background:transparent;color:var(--ink-30);
+  border-radius:var(--r);
+  transition:color var(--t), background var(--t);
+}
+.act:hover{color:var(--ink);background:var(--rule-soft)}
+.act svg{width:17px;height:17px}
+.act.starred{color:var(--clem)}
+
+.card-body{all:unset;display:block;cursor:pointer;margin-top:var(--s3)}
+.snip{
+  font-family:var(--type);
+  font-size:13.5px;line-height:1.6;
+  margin:0;white-space:pre-wrap;word-break:break-word;
+  border-top:1px dashed var(--rule);
+  padding-top:var(--s3);
+}
+.snip mark{
+  background:var(--lemon);color:var(--lemon-ink);
+  padding:0 3px;border-radius:2px;
+}
+.card-foot{
+  display:block;margin-top:var(--s3);
+  font-family:var(--type);font-size:11px;color:var(--ink-30);
+  opacity:0;transition:opacity var(--t);
+}
+.card:hover .card-foot,.card:focus-within .card-foot{opacity:1}
+
+/* copied — the ink sweep */
+.flash{
+  position:absolute;inset:0;
+  background:var(--ink);color:var(--sheet);
+  display:flex;align-items:center;justify-content:center;gap:var(--s2);
+  font-family:var(--display);font-size:17px;letter-spacing:.04em;
+  clip-path:inset(0 100% 0 0);pointer-events:none;
+}
+.card.copied .flash{animation:sweep 620ms cubic-bezier(.65,0,.35,1) forwards}
+@keyframes sweep{
+  0%{clip-path:inset(0 100% 0 0)}
+  26%{clip-path:inset(0 0 0 0)}
+  70%{clip-path:inset(0 0 0 0)}
+  100%{clip-path:inset(0 0 0 100%)}
+}
+
+.empty{
+  text-align:center;
+  border:1px dashed var(--rule);border-radius:var(--r);
+  padding:var(--s7) var(--s4);color:var(--ink-60);
+}
+.empty strong{
+  display:block;font-family:var(--display);font-weight:400;
+  color:var(--ink);font-size:19px;margin-bottom:var(--s2);
+}
+.empty .btn{margin-top:var(--s4)}
+
+/* ── dialogs ───────────────────────────────────────────────── */
+dialog{
+  border:1px solid var(--ink);
+  border-radius:var(--r);
+  background:var(--sheet);color:var(--ink);
+  padding:var(--s5);
+  width:min(620px,calc(100vw - 32px));
+  max-height:calc(100vh - 48px);
+  box-shadow:4px 4px 0 var(--press);
+  z-index:var(--z-dialog);
+}
+dialog::backdrop{background:var(--overlay)}
+dialog h2{
+  font-family:var(--display);font-weight:400;
+  margin:0 0 var(--s2);font-size:22px;
+}
+dialog .lede{margin:0 0 var(--s5);color:var(--ink-60);font-size:14px}
+dialog .lede mark{background:var(--lemon);color:var(--lemon-ink);padding:0 3px;border-radius:2px;font-family:var(--type);font-size:.92em}
+
+.field{margin-bottom:var(--s4)}
+.field label{display:block;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:var(--s2)}
+.control{
+  width:100%;font:inherit;font-size:15px;color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--rule);border-radius:var(--r);
+  padding:11px var(--s3);min-height:46px;
+  transition:border-color var(--t), box-shadow var(--t);
+}
+textarea.control{font-family:var(--type);font-size:13.5px;line-height:1.6;resize:vertical;min-height:190px}
+.control:focus{outline:0;border-color:var(--ink);box-shadow:2px 2px 0 var(--press)}
+.control[aria-invalid="true"]{border-color:var(--danger)}
+.field .help{font-size:12.5px;color:var(--ink-60);margin:var(--s2) 0 0}
+.err{display:none;font-size:12.5px;color:var(--danger);font-weight:600;margin-top:var(--s2)}
+.err.show{display:block}
+.row{display:flex;gap:var(--s3)}
+.row .field{flex:1;min-width:0}
+.dialog-foot{display:flex;gap:var(--s3);justify-content:flex-end;margin-top:var(--s5);flex-wrap:wrap}
+.dialog-foot .left{margin-right:auto}
+
+/* ── toast ─────────────────────────────────────────────────── */
+#toast{
+  position:fixed;left:50%;bottom:var(--s5);transform:translateX(-50%);
+  z-index:var(--z-toast);
+  display:flex;align-items:center;gap:var(--s3);
+  background:var(--ink);color:var(--sheet);
+  border-radius:var(--r);
+  padding:var(--s3) var(--s4);
+  font-size:14px;font-weight:500;
+  box-shadow:3px 3px 0 rgba(0,0,0,.35);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--t), transform var(--t);
+  max-width:calc(100vw - 32px);
+}
+#toast.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(-4px)}
+#toast button{
+  background:transparent;border:1px solid currentColor;color:inherit;
+  border-radius:var(--r);padding:6px var(--s3);font-size:13px;font-weight:700;flex:none;
+}
+
+footer{
+  margin-top:var(--s5);
+  font-family:var(--type);font-size:11.5px;color:var(--ink-60);
+  display:flex;gap:var(--s5);flex-wrap:wrap;
+}
+
+/* ── responsive ────────────────────────────────────────────── */
+@media (max-width:768px){
+  .toolbar .kbd{display:none}
+  .card-foot{opacity:1}
+  .desk{padding:var(--s4) var(--s3) var(--s5)}
+  dialog{padding:var(--s4)}
+}
+@media (max-width:480px){
+  body{padding:0 var(--s3) var(--s6)}
+  .grid{columns:1}
+  .row{flex-direction:column;gap:0}
+  .dialog-foot .btn{flex:1}
+  .register{flex:1;text-align:center;padding:12px 8px 10px}
+  .register .count{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
+  .card.copied .flash{clip-path:inset(0 0 0 0)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="mast-row">
+      <h1>St Clement</h1>
+      <span class="tally" id="tally" aria-live="polite"></span>
+      <span class="mast-tools">
+        <button class="iconbtn" id="themeBtn" aria-label="Switch theme"></button>
+        <button class="iconbtn" id="dataBtn" aria-label="Backup and restore" title="Backup and restore">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </button>
+      </span>
+    </div>
+    <div class="rulebar" aria-hidden="true"></div>
+  </header>
+
+  <nav class="registers" role="tablist" aria-label="Workspace">
+    <button class="register" id="tab-dining" role="tab" aria-selected="true" aria-controls="desk">
+      Dining<span class="count" id="cDining"></span>
+    </button>
+    <button class="register" id="tab-rooms" role="tab" aria-selected="false" aria-controls="desk">
+      Rooms<span class="count" id="cRooms"></span>
+    </button>
+    <span class="register-shelf" style="flex:1" aria-hidden="true"></span>
+  </nav>
+
+  <section class="desk" id="desk" role="tabpanel">
+    <div class="toolbar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+        <span class="sr">Search snippets</span>
+        <input id="q" type="search" placeholder="Search…" autocomplete="off" spellcheck="false">
+      </label>
+      <span class="kbd">/</span>
+      <button class="btn btn-primary" id="newBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        New snippet
+      </button>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <main class="grid" id="grid"></main>
+  </section>
+
+  <footer>
+    <span>Click a letter to copy</span>
+    <span>W switch desk</span>
+    <span>/ search</span>
+    <span>N new</span>
+    <span>Enter copies top result</span>
+  </footer>
+</div>
+
+<dialog id="editDlg" aria-labelledby="editTitle">
+  <h2 id="editTitle">New snippet</h2>
+  <p class="lede">Anything in <mark>[square brackets]</mark> gets the highlighter, so the blanks are obvious before sending.</p>
+
+  <div class="row">
+    <div class="field">
+      <label for="fLabel">Name</label>
+      <input id="fLabel" class="control" placeholder="Tables of 7" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="fCat">Category</label>
+      <input id="fCat" class="control" list="catList" placeholder="Availability" autocomplete="off" aria-describedby="hCat eCat">
+      <datalist id="catList"></datalist>
+      <p class="help" id="hCat">New names get their own colour.</p>
+      <p class="err" id="eCat" role="alert"></p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="fText">Snippet text</label>
+    <textarea id="fText" class="control" aria-describedby="eText"></textarea>
+    <p class="err" id="eText" role="alert"></p>
+  </div>
+
+  <div class="dialog-foot">
+    <button class="btn btn-quiet left" id="delBtn" hidden>Delete</button>
+    <button class="btn btn-quiet" id="cancelBtn">Cancel</button>
+    <button class="btn btn-primary" id="saveBtn">Save snippet</button>
+  </div>
+</dialog>
+
+<dialog id="confirmDlg" aria-labelledby="confTitle">
+  <h2 id="confTitle">Delete this snippet?</h2>
+  <p class="lede">It'll be removed from this desk. You'll get a few seconds to undo.</p>
+  <div class="dialog-foot">
+    <button class="btn btn-quiet" id="confNo">Keep it</button>
+    <button class="btn btn-danger" id="confYes">Delete</button>
+  </div>
+</dialog>
+
+<dialog id="dataDlg" aria-labelledby="dataTitle">
+  <h2 id="dataTitle">Backup and restore</h2>
+  <p class="lede">Everything is stored in this browser only — nothing is sent anywhere. The backup covers both desks. Export before switching device or clearing your cache.</p>
+  <div class="dialog-foot" style="justify-content:flex-start">
+    <button class="btn btn-primary" id="exportBtn">Export .json</button>
+    <button class="btn btn-quiet" id="importBtn">Import .json</button>
+    <input type="file" id="fileIn" accept="application/json,.json" hidden>
+  </div>
+  <div class="dialog-foot" style="margin-top:var(--s5);border-top:1px dashed var(--rule);padding-top:var(--s4)">
+    <button class="btn btn-quiet left" id="resetBtn">Reset this desk to original</button>
+    <button class="btn btn-quiet" id="dataClose">Close</button>
+  </div>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"><span id="toastMsg"></span></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ORIGINAL SETS — used on first load and on reset.
+   Two desks. Format: [category, name, text]
+   ══════════════════════════════════════════════════════════════ */
+const STARTER_DINING = [
+
+["Providing Availability","",
+"Thanks so much for your interest in dining with us. We'd love to welcome you!\n\nPlease see below the availability for [breakfast / lunch / dinner], table of [number] on [date]:\n\n[6pm, 6:15pm, 6:30pm, 6:45pm, 8pm, 8:15pm, 8:30pm]\n\nLet me know your preferred time alongside a telephone number to be included in your booking and I'd be happy to arrange this for you.\n\nMany thanks,"],
+
+["Booking Confirmation","",
+"Thanks so much for your interest in dining with us. We'd love to welcome you!\n\nYou're all booked in on [date], [number] guests at [time]. An email confirmation has been sent to you separately.\n\nIf there's anything you'd like me to note ahead of your visit, dietary or otherwise, just let me know.\n\nWe look forward to seeing you on [date / day]!\n\nMany thanks,"],
+
+["Fully Booked","",
+"Thanks so much for your interest in dining with us. We'd love to welcome you!\n\nI'm afraid we're fully booked for the [lunch / dinner] seating time on [date], our next available table for [number] guests is on [date] at [time].\n\nLet me know if the above works for you or if I can assist with alternative availability.\n\nMany thanks,"],
+
+["Seating Preferences Requests","",
+"I've noted your seating preferences \u2014 although this is not a guarantee and remains subject to availability on the day itself."],
+
+["Dietary Requirements ADVD","",
+"I've noted your dietary requirements in your booking and suitable alternatives will be provided on the day. Just to mention, as we operate on an open plan kitchen, I'm afraid we cannot guarantee the absolute absence of traces."],
+
+["Photography Advise","",
+"If there's anything you'd like me to note ahead of the evening, dietary or otherwise, just let me know.\n\nOne small thing to mention, as we're still in a growing phase, we'd really appreciate keeping photography to a minimum during the experience."],
+
+["Large Party ADVD & Availability","",
+"Thanks so much for your interest in dining with us, we'd love to welcome you!\n\nJust to mention our largest table can accommodate up to 6 guests. We can of course split you over multiple tables \u2014 however there's no guarantee that these would be near each other, and will be dependent on the availability on the day.\n\nAvailability wise, we can accommodate your party across a table of [number] on [date] at [time].\n\nLet me know if the above arrangements work for you and I'd be happy to book you in.\n\nMany thanks,"],
+
+["Large Party (Waitlisted)","",
+"Thanks so much for your interest in dining with us and for considering us for such a wonderful occasion! We'd love to welcome you and your guests.\n\nOur availability operates on a three-week booking window, therefore it's a little too early for us to take a reservation for your preferred date. I'd be happy to add you on a waiting list, and we'll get in touch once these are released.\n\nBefore I do so, I just want to mention that our largest table can accommodate up to 6 guests. We can of course split you over multiple tables \u2014 however there's no guarantee that these would be near each other, and will be dependent on the availability on the day.\n\nLet me know if the above works for you and I'd be happy to add you.\n\nMany thanks,"],
+
+["Private Dining in CC & Large Party (Waitlisted)","",
+"Thank you for your interest in dining with us and for considering us for such a special occasion. We'd be delighted to welcome you and your guests.\n\nUnfortunately, we do not offer private or semi-private dining in Caf\u00e9 Clement.\n\nAs we operate on a three-week booking window, it's currently too early to take a reservation for your preferred date. However, I'd be happy to add you to our waiting list and contact you once bookings are released.\n\nBefore doing so, just to mention that our largest table accommodates up to six guests. We can split your party across multiple tables, subject to availability, but we cannot guarantee that they will be located near each other. Similarly, any seating preferences are subject to availability on the day and cannot be guaranteed.\n\nLet me know if this arrangement works for you, I'd be happy to add you to the waiting list.\n\nMany thanks,"],
+
+["Parties over 12pax Requests","",
+"Thanks so much for getting in touch and for considering us for your event!\n\nI'm afraid that the largest table we can accommodate within our Caf\u00e9 Clement is a table of 6 guests, and while we can split those across two tables \u2014 the largest booking as part of the same group that can be accommodated is up to 12 guests maximum.\n\nRegrettably, we're unable to accommodate your large party booking on this occasion.\n\nWe're sorry for any inconvenience this may cause.\n\nMany thanks,"],
+
+["Tables of 7 ADVD","",
+"Thanks so much for your interest in dining with us, we'd love to welcome you and your guests!\n\nJust to mention that the largest table we can accommodate is a table of maximum 6 guests. We can make an exception for your party and seat you all together, however the seating will be a bit tight.\n\nLet me know if that works for you and I'd be happy to book / check the availability for you.\n\nMany thanks,"],
+
+["Add Waiting List \u2013 RQST Info","",
+"Thanks so much for your interest in dining with us, we'd love to welcome you!\n\nAs we operate a three-week booking window, it's a little too early for us to take a reservation for your preferred date. I'd be happy to add you on a waiting list, and we'll get in touch once these are released.\n\nLet me know your preferred date and time and I'll arrange this for you.\n\nMany thanks,"],
+
+["Booking Window ADVD + Added WL","",
+"Thanks so much for your interest in dining with us, we'd love to welcome you!\n\n[this section was blank in the original document \u2014 add the booking window wording here]\n\nThank you, and we look forward to welcoming you!"],
+
+["Waiting List / Res Confirmation","",
+"Hi [name],\n\nHope you're well!\n\nYour request has been confirmed, and you're all booked in on [date], [number] guests at [time]. An email confirmation has been sent to you separately.\n\nIf there's anything you'd like me to note ahead of your visit, dietary or otherwise, just let me know.\n\nWe look forward to seeing you on the [date]!"],
+
+["Waitlist Decline & Alternative","",
+"Hi [name],\n\nHope you're well!\n\nJust updating you on your [lunch / dinner] request on [date], I'm afraid we are fully booked in between [times]. Our next available time is at [3:30pm] on the [date].\n\nLet me know if the alternative time is suitable for you and I'd be happy to book you in.\n\nMany thanks,"],
+
+["Parking","",
+"I'm afraid our valet parking service is not yet available, and while there is on street parking in the area this of course cannot be guaranteed due to the area being mostly a controlled parking zone.\n\nHowever, the nearest car park currently available to us is the Bouverie Street Car Park, on 11-15 Bouverie Street, Temple, London, EC4Y 8DP, this is a brief 10-minute walk away from us."],
+
+["Children Menu","",
+"Regarding the children's menu, while we don't have a menu specific for children \u2014 a few simple options can be offered on the day by our chefs."],
+
+["Large Party \u2013 Set Menu","",
+"Thank you for getting in touch, and for your interest in dining with us. We'd love to welcome you and your guests!\n\nYou're all booked in on [date], [number] guests at [time]. An email confirmation was sent separately.\n\nAs your party is larger, you will be dining from our set menu at \u00a3[75] per person, which I've attached for your review. Please note this is a sample menu, and the offerings may slightly differ on the day as our chefs put together the best seasonal dishes.\n\nIf there's anything you'd like me to note ahead of your visit, dietary or otherwise, just let me know.\n\nWe look forward to welcoming you and your guests in [month]!\n\nMany thanks,"],
+
+["RQST for Cake \u2013 Special Occasion","",
+"Thank you for your message, and for choosing us to celebrate such a wonderful occasion! Happy birthday to your [partner]!\n\nOur colleagues do tend to offer a small gesture for special occasions, and we'll certainly make a note of the birthday and request this for you. While we can't guarantee anything, the team will do their very best to make the evening memorable.\n\nLet me know if there's anything else I can help with in the meantime.\n\nWe look forward to welcoming you both [tomorrow]!\n\nMany thanks,"],
+
+["Wait List Confirmation & RQST CC","",
+"Hi [name],\n\nHope you're well!\n\nYour request has been confirmed, and I've provisionally booked you in for [date], [number] guests at [time].\n\nWe require card details to guarantee the booking. No prepayment will be taken, and the final bill will be settled on the day using your preferred payment method.\n\nWhile the secure link was sent separately, I've also included it below:\n\n[link]\n\nThe link is valid for 24 hours, after which the reservation will be released if not completed.\n\nIf there's anything you'd like me to note ahead of your visit, dietary or otherwise, just let me know.\n\nWe look forward to welcoming you to Caf\u00e9 Clement!\n\nMany thanks,"],
+
+["Large Party Booking / Set Menu / CC Link","",
+"Hi [name],\n\nHope you're well!\n\nWe'd be very happy to welcome your party of [number] to Caf\u00e9 Clement for dinner on [date] at [time]. I've provisionally booked your reservation for you.\n\nTo ensure we're able to provide a seamless service for a party of this size, you'll be dining from our set menu at \u00a3[75] per person. I've attached a sample menu for your review. Please note that this is a sample menu, and the offerings may differ slightly on the day as our chefs put together the best seasonal dishes.\n\nIf there's anything you'd like me to note ahead of your visit, dietary requirements or otherwise, just let me know.\n\nWe require card details to guarantee the booking. No prepayment will be taken, and the final bill can be settled on the day using your preferred payment method.\n\nThe secure link has been sent separately, but I've also included it below for convenience:\n\n[link]\n\nThe link is valid for 24 hours, after which the reservation will be released if it hasn't been completed.\n\nWe look forward to welcoming you to Caf\u00e9 Clement.\n\nMany thanks,"],
+];
+
+const STARTER_ROOMS = [
+
+["Additional Sentences","FT HTSI feature",
+"As you've seen on FT HTSI feature, St Clement is indeed an exciting new project!"],
+
+["Additional Sentences","Thanks for the enthusiasm",
+"Thanks so much for your kind message and for sharing the enthusiasm around the project, we truly appreciate it!"],
+
+["Additional Sentences","Special occasion stay",
+"Thank you so much for getting in touch and for thinking of us for such a special occasion! We'd love to have you stay with us and help make this celebration truly special."],
+
+["Additional Sentences","Soho House member",
+"Thanks so much for getting in touch. We'd love to have you stay with us; especially as a long-standing member of Soho House!"],
+
+["Additional Sentences","Soho House \u2014 kind reply",
+"Thank you very much for your kind reply and for sharing in the enthusiasm around the project! It's especially lovely to hear from Soho House members who already know and appreciate Nick's style of hospitality."],
+
+["Additional Sentences","Not associated with Soho House",
+"While this project is not associated with Soho House, as long-standing members, we would especially love to have you stay with us and share in the enthusiasm around Nick's new venture."],
+
+["Additional Sentences","Not affiliated \u2014 short",
+"While we're not affiliated with Soho House, we'd absolutely love to welcome you, especially as you already know and appreciate Nick's style of hospitality."],
+
+["Declined Request","No availability \u2014 summer",
+"I'm afraid we don't have any remaining availability throughout the summer. However, if you'd like to stay from October onwards, just let me know your preferred dates and I'd be happy to check our availability and prepare a formal offer for you."],
+
+["Declined Request","No availability \u2014 until end of September",
+"I'm afraid we don't have any remaining availability up until the end of September. However, if you'd like to stay from October onwards, just let me know your preferred dates and I'd be happy to check our availability and prepare a formal offer for you."],
+
+["Declined Request","Can't accommodate this summer + update",
+"I'm afraid we won't be able to accommodate your stay this summer. However, I do have a little update: if you'd like to stay with us from October onwards, just let me know your preferred dates and I'd be happy to check our availability and prepare our best available offer for you."],
+
+["Offers","Offer \u2014 preferred dates",
+"Thank you so much for getting in touch! We'd love to have you stay with us.\n\nPlease find our formal offer attached for your preferred dates.\n\nOnce you're ready, just let me know which option you'd like to go ahead with, and I'll take care of everything from there.\n\nIt would also be great if you could share your mobile number, along with the names of any additional guests staying.\n\nThank you,"],
+
+["Offers","No dates",
+"Thank you for your message.\n\nPlease find our formal offer attached for your review, I have selected a stay in between [17th\u201318th October] \u2014 although I can confirm that our rates are currently consistent throughout October and November, starting from \u00a3[700] for our entry-level room category.\n\nWe'd love to welcome you. Once you're ready, just let me know which option you'd like to go ahead with and your preferred dates, and I'll take care of everything from there.\n\nIt would also be great if you could share your mobile number, along with the names of any additional guests staying.\n\nThank you,"],
+
+["Offers","Special opening rates",
+"Thank you for your prompt reply, and for considering us for such a special occasion!\n\nPlease find our formal offer attached for your review, I have selected a stay in between [4th\u20135th October] \u2014 although I can confirm that our rates are currently consistent throughout October and November, with our special opening rates starting from \u00a3[700] for our entry-level room category.\n\nWe'd love to welcome you. Once you're ready, just let me know which option you'd like to go ahead with and your preferred dates if different than above, and I'll take care of everything from there.\n\nThank you,"],
+
+["Offers","New Years \u2014 not yet released",
+"Thanks so much for getting in touch, and for considering us for your New Year's Celebrations!\n\nAt the moment we're still finalising our plans for the New Year's period, so availability for those dates has not yet been released.\n\nI'd be happy to keep you updated on this once it gets released, in the meantime please let me know your preferred dates, length of stay and number of guests staying.\n\nWe can't wait to hear back from you!"],
+
+["Offers","New Years \u2014 request noted",
+"Thanks so much for getting in touch, and for considering us for your New Year's Celebrations!\n\nAt the moment we're still finalising the details for your preferred dates, therefore the availability has not yet been released.\n\nI've noted your request and we'll be in touch once those dates become available.\n\nWe appreciate your patience and understanding in the meantime!\n\nMany thanks,"],
+
+["Offers","With children \u2014 no interconnecting",
+"Thank you for getting in touch, and for your interest in staying with us!\n\nPlease find our formal offer attached for your preferred dates. Just to mention, we do not have any interconnecting rooms. As children are not permitted to stay in a room on their own, an adult would need to stay in the room with the child. We would, however, be happy to reserve adjacent rooms for you.\n\nOnce you're ready, just let me know which option you'd like to go ahead with, and I'll take care of everything from there.\n\nIt would also be great if you could share your mobile number, along with the names of any additional guests staying.\n\nThank you,"],
+
+["Offer Accepted \u2013 CC Link RQST","",
+"Thanks so much for confirming, we're happy to hear you wish to proceed!\n\nI've provisionally booked [room / dates] for you.\n\nTo confirm the reservation, we require card details as a guarantee. No prepayment will be taken, and all charges will be settled at check-out. Please click here to securely provide your card details, the link will remain active up until the [date]. Once the card details are received, I will forward you the confirmation.\n\nI know it's quite some time in advance, but if you happen to know your estimated arrival time, we'd appreciate you letting us know.\n\nIf there's anything I can do to make your stay more comfortable, feel free to get in touch.\n\nMany thanks,"],
+
+["Confirmation","Booking in place",
+"Hi [name],\n\nThank you for your prompt reply, and for confirming!\n\nI can confirm that your booking for a [Bedroom] is now in place, and the email confirmation has been sent separately.\n\nAdditionally, I know it's quite some time in advance, but if you happen to know your estimated arrival time, we'd appreciate you letting us know.\n\nIf there's anything I can do to make your stay more comfortable, feel free to let me know.\n\nWe look forward to welcoming you to St Clement!"],
+
+["Confirmation","Card received \u2014 confirmed",
+"Thank you for your message.\n\nI can confirm that we have received your card information and your reservation is confirmed. The email confirmation has been sent separately.\n\nWe'd appreciate you letting us know your estimated arrival time closer to the date.\n\nLet me know if there's anything else I can help with in the meantime.\n\nWe look forward to welcoming you to St Clement!"],
+
+["Dog Policy Rooms","",
+"We welcome one small, house-trained pet (up to 10 kg) per room. A \u00a3200 deep-cleaning fee applies per stay. Pets may not be left unattended or enter the restaurants or Health Club (service and support animals are exempt). Guests are responsible for any damage or disturbance caused."],
+
+["CC Links & Inquiries","New link",
+"I hope you're doing well!\n\nI'm just getting in touch to follow up on your upcoming stay at St Clement.\n\nYour reservation is currently being held provisionally, and we'll just need your credit card details to guarantee and confirm the booking.\n\nThe previous secure payment link has now expired, so if you'd still like to stay with us, simply click here to provide your details.\n\n[link]\n\nIf not completed by [date], the reservation will be released.\n\nIf you have any questions in the meantime, please let me know.\n\nMany thanks,"],
+
+["CC Links & Inquiries","Inquiry expired \u2014 booking released",
+"I hope you're well.\n\nAs we haven't received the card details needed to guarantee your reservation, I'm afraid we've now had to release your provisional booking.\n\nIf you'd still like to stay with us, please let me know. I'd be happy to check our current availability and, if your preferred dates are still available, send you a new payment link to complete your reservation.\n\nI look forward to hearing from you."],
+
+["Early Arrival","",
+"I've also noted your arrival time \u2014 while our guaranteed check-in time is 3pm, we'll certainly do our best to have your room ready earlier, subject to availability on the day."],
+];
+
+/* ── ink palette: legible on paper in both themes ─────────── */
+const PALETTE = [
+  {light:"#C3541C", dark:"#F0975B"},  /* clementine   */
+  {light:"#3E6B33", dark:"#9CC489"},  /* leaf         */
+  {light:"#8C6D1F", dark:"#DFC26A"},  /* ochre        */
+  {light:"#2E5E68", dark:"#8FC3CE"},  /* teal ink     */
+  {light:"#6E3E75", dark:"#CFA3D6"},  /* plum         */
+  {light:"#9A2B1F", dark:"#EC9186"},  /* brick        */
+  {light:"#31538F", dark:"#9EB8E8"},  /* blue ink     */
+  {light:"#5C6154", dark:"#B4B7A8"},  /* graphite     */
+];
+function catColor(name){
+  const k = name.trim().toLowerCase();
+  let h = 0;
+  for(const ch of k) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+const spine = n => catColor(n)[theme];
+
+/* ── storage that never throws ────────────────────────────── */
+const KEY = "snippets.v6", OLDKEYS = ["snippets.v5","snippets.v4"];
+const store = (() => {
+  let mem = {};
+  const ok = (() => { try{ localStorage.setItem("__t","1"); localStorage.removeItem("__t"); return true; }catch{ return false; } })();
+  return {
+    ok,
+    get(k,d){ try{ const v = ok ? localStorage.getItem(k) : mem[k]; return v ? JSON.parse(v) : d; }catch{ return d; } },
+    set(k,v){ try{ const s = JSON.stringify(v); ok ? localStorage.setItem(k,s) : (mem[k]=s); }catch{} }
+  };
+})();
+
+const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+const seedFrom = src => src.map(([cat,label,text]) => ({ id:uid(), cat, label, text, fav:false }));
+
+/* Migrate older saves by MERGING onto a fresh full seed — never by
+   replacing it. Old saves contain old seeded lists; trusting them
+   wholesale is how templates go missing. Stars carry over on exact
+   text matches; anything not in the new seed is treated as a custom
+   snippet and kept. */
+function fresh(){
+  return {
+    ws:"dining",
+    dining:{ items: seedFrom(STARTER_DINING) },
+    rooms: { items: seedFrom(STARTER_ROOMS)  },
+    theme:null,
+  };
+}
+function migrate(){
+  let old = null;
+  for(const k of OLDKEYS){ old = store.get(k, null); if(old) break; }
+  if(!old) return null;
+  const base = fresh();
+  base.ws    = old.ws === "rooms" ? "rooms" : "dining";
+  base.theme = old.theme || null;
+  for(const deskName of ["dining","rooms"]){
+    const oldItems = old[deskName]?.items || [];
+    const byText = new Map(base[deskName].items.map(i => [i.text, i]));
+    for(const it of oldItems){
+      if(typeof it?.text !== "string") continue;
+      const hit = byText.get(it.text);
+      if(hit){ hit.fav = hit.fav || !!it.fav; continue; }   /* same template — keep star */
+      base[deskName].items.push({ id:uid(), cat:String(it.cat||"Imported"), label:String(it.label||""), text:it.text, fav:!!it.fav });
+      byText.set(it.text, true);
+    }
+  }
+  return base;
+}
+
+let state = store.get(KEY, null) || migrate() || fresh();
+let theme = state.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+let ws = state.ws === "rooms" ? "rooms" : "dining";
+let filters = { dining:"all", rooms:"all" };
+let query = "", editingId = null, pendingDelete = null, undoBuffer = null;
+
+const desk  = () => state[ws];
+const items = () => desk().items;
+const save  = () => { state.ws = ws; state.theme = theme; store.set(KEY, state); };
+
+/* ── elements ─────────────────────────────────────────────── */
+const $ = s => document.querySelector(s);
+const grid=$("#grid"), chips=$("#chips"), q=$("#q"), tally=$("#tally"), deskEl=$("#desk");
+const editDlg=$("#editDlg"), confirmDlg=$("#confirmDlg"), dataDlg=$("#dataDlg");
+const fText=$("#fText"), fCat=$("#fCat"), fLabel=$("#fLabel"), eText=$("#eText"), eCat=$("#eCat");
+const toast=$("#toast"), toastMsg=$("#toastMsg");
+const tabs = { dining:$("#tab-dining"), rooms:$("#tab-rooms") };
+
+const ICON = {
+  star:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
+  starOn:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9z"/></svg>',
+  edit:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>',
+  sun:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>',
+  moon:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5z"/></svg>',
+};
+
+/* ── theme ────────────────────────────────────────────────── */
+function applyTheme(){
+  document.documentElement.dataset.theme = theme;
+  const b = $("#themeBtn");
+  b.innerHTML = theme === "dark" ? ICON.sun : ICON.moon;
+  b.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+}
+$("#themeBtn").onclick = () => { theme = theme === "dark" ? "light" : "dark"; applyTheme(); save(); buildChips(); render(); };
+
+/* ── workspace switch ─────────────────────────────────────── */
+function setWs(next, announce){
+  if(next === ws) return;
+  ws = next; save();
+  tabs.dining.setAttribute("aria-selected", ws === "dining");
+  tabs.rooms.setAttribute("aria-selected", ws === "rooms");
+  query = ""; q.value = "";
+  buildChips(); render();
+  deskEl.classList.remove("turn"); void deskEl.offsetWidth; deskEl.classList.add("turn");
+  if(announce) showToast(ws === "dining" ? "Dining desk" : "Rooms desk");
+}
+tabs.dining.onclick = () => setWs("dining");
+tabs.rooms.onclick  = () => setWs("rooms");
+
+function updateCounts(){
+  $("#cDining").textContent = state.dining.items.length;
+  $("#cRooms").textContent  = state.rooms.items.length;
+}
+
+/* ── rendering ────────────────────────────────────────────── */
+const esc  = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mark = s => esc(s).replace(/\[([^\]\n]+)\]/g, '<mark>[$1]</mark>');
+const cats = () => [...new Set(items().map(i => i.cat))];
+
+function buildChips(){
+  chips.innerHTML = "";
+  const list = [["all","All",null],["fav","Starred",null], ...cats().map(c => [c,c,c])];
+  for(const [key,label,cat] of list){
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    const on = filters[ws] === key;
+    b.setAttribute("aria-pressed", on);
+    if(cat && !on) b.style.color = spine(cat);
+    b.innerHTML = (cat ? '<span class="dot"></span>' : "") + esc(label);
+    b.onclick = () => { filters[ws] = key; buildChips(); render(); };
+    chips.appendChild(b);
+  }
+}
+
+function visible(){
+  const t = query.trim().toLowerCase(), f = filters[ws];
+  return items().filter(s =>
+    (f === "all" || (f === "fav" ? s.fav : s.cat === f)) &&
+    (!t || s.text.toLowerCase().includes(t) || s.cat.toLowerCase().includes(t) || (s.label||"").toLowerCase().includes(t))
+  );
+}
+
+function render(){
+  const list = visible();
+  tally.textContent = `${list.length} of ${items().length}`;
+  updateCounts();
+  grid.innerHTML = "";
+  grid.classList.toggle("is-empty", !list.length);
+
+  if(!list.length){
+    const d = document.createElement("div");
+    d.className = "empty";
+    d.innerHTML = items().length
+      ? "<strong>Nothing matches that</strong>Try another word, or press Esc to clear the search."
+      : "<strong>This desk is empty</strong>Add the first reply you find yourself typing over and over.";
+    if(!items().length){
+      const b = document.createElement("button");
+      b.className = "btn btn-primary"; b.textContent = "New snippet";
+      b.onclick = () => openEdit();
+      d.appendChild(b);
+    }
+    grid.appendChild(d);
+    return;
+  }
+
+  list.forEach((s,n) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.style.setProperty("--spine", spine(s.cat));
+    card.style.animationDelay = Math.min(n * 20, 280) + "ms";
+    card.innerHTML = `
+      <div class="meta">
+        <span class="headings">
+          ${s.label ? `<span class="cat">${esc(s.cat)}</span><span class="label">${esc(s.label)}</span>`
+                    : `<span class="label label-dot">${esc(s.cat)}</span>`}
+        </span>
+        <span class="actions">
+          <button class="act ${s.fav ? "starred" : ""}" data-a="fav" aria-pressed="${!!s.fav}" aria-label="Star this snippet">${s.fav ? ICON.starOn : ICON.star}</button>
+          <button class="act" data-a="edit" aria-label="Edit this snippet">${ICON.edit}</button>
+        </span>
+      </div>
+      <button class="card-body" data-a="copy" aria-label="Copy ${esc(s.label || "snippet")}">
+        <p class="snip">${mark(s.text)}</p>
+        <span class="card-foot">click to copy</span>
+      </button>
+      <div class="flash" aria-hidden="true">${ICON.check} Copied</div>`;
+
+    card.querySelector('[data-a="fav"]').onclick  = () => { s.fav = !s.fav; save(); render(); };
+    card.querySelector('[data-a="edit"]').onclick = () => openEdit(s);
+    card.querySelector('[data-a="copy"]').onclick = () => copy(s.text, card);
+    grid.appendChild(card);
+  });
+}
+
+/* ── copy ─────────────────────────────────────────────────── */
+function copy(text, card){
+  const done = () => {
+    card.classList.remove("copied"); void card.offsetWidth;
+    card.classList.add("copied");
+    setTimeout(() => card.classList.remove("copied"), 700);
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done).catch(() => legacy(text, done));
+  } else legacy(text, done);
+}
+function legacy(text, done){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.setAttribute("readonly","");
+  ta.style.cssText = "position:fixed;top:0;left:-9999px";
+  document.body.appendChild(ta);
+  ta.select(); ta.setSelectionRange(0, text.length);
+  try{ document.execCommand("copy"); done(); }
+  catch{ showToast("Couldn't copy — select the text manually."); }
+  ta.remove();
+}
+
+/* ── toast ────────────────────────────────────────────────── */
+let toastTimer;
+function showToast(msg, action){
+  toastMsg.textContent = msg;
+  toast.querySelector("button")?.remove();
+  if(action){
+    const b = document.createElement("button");
+    b.textContent = action.label;
+    b.onclick = () => { action.run(); hideToast(); };
+    toast.appendChild(b);
+  }
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, action ? 7000 : 2200);
+}
+const hideToast = () => toast.classList.remove("show");
+
+/* ── create / edit ────────────────────────────────────────── */
+function openEdit(snip){
+  editingId = snip?.id ?? null;
+  $("#editTitle").textContent = snip ? "Edit snippet" : `New snippet — ${ws === "dining" ? "Dining" : "Rooms"}`;
+  $("#saveBtn").textContent   = snip ? "Save changes" : "Add snippet";
+  $("#delBtn").hidden = !snip;
+  fText.value  = snip?.text  ?? "";
+  fCat.value   = snip?.cat   ?? "";
+  fLabel.value = snip?.label ?? "";
+  clearErr(fText,eText); clearErr(fCat,eCat);
+  $("#catList").innerHTML = cats().map(c => `<option value="${esc(c)}">`).join("");
+  editDlg.showModal();
+  (snip ? fText : fLabel).focus();
+}
+const setErr   = (el,box,msg) => { el.setAttribute("aria-invalid","true"); box.textContent = msg; box.classList.add("show"); };
+const clearErr = (el,box) => { el.removeAttribute("aria-invalid"); box.textContent = ""; box.classList.remove("show"); };
+
+fText.addEventListener("blur", () => fText.value.trim() ? clearErr(fText,eText) : setErr(fText,eText,"Add some text for this snippet."));
+fCat.addEventListener("blur",  () => fCat.value.trim()  ? clearErr(fCat,eCat)   : setErr(fCat,eCat,"Give it a category so it's easy to find."));
+
+$("#saveBtn").onclick = () => {
+  const text = fText.value.trim(), cat = fCat.value.trim();
+  let label  = fLabel.value.trim();
+  let bad = false;
+  if(!text){ setErr(fText,eText,"Add some text for this snippet."); bad = true; }
+  if(!cat){ setErr(fCat,eCat,"Give it a category so it's easy to find."); bad = true; }
+  if(bad){ (!text ? fText : fCat).focus(); return; }
+
+  if(!label){
+    label = text.split("\n")[0].slice(0,42).trim();
+    if(text.split("\n")[0].length > 42) label += "…";
+  }
+  const finalCat = cats().find(c => c.toLowerCase() === cat.toLowerCase()) || cat;
+
+  if(editingId){
+    const s = items().find(i => i.id === editingId);
+    Object.assign(s, { text, cat:finalCat, label });
+    showToast("Snippet updated");
+  } else {
+    items().unshift({ id:uid(), cat:finalCat, label, text, fav:false });
+    showToast("Snippet added");
+  }
+  save(); editDlg.close(); buildChips(); render();
+};
+$("#cancelBtn").onclick = () => editDlg.close();
+$("#newBtn").onclick    = () => openEdit();
+
+/* ── delete + undo ────────────────────────────────────────── */
+$("#delBtn").onclick  = () => { pendingDelete = editingId; confirmDlg.showModal(); };
+$("#confNo").onclick  = () => confirmDlg.close();
+$("#confYes").onclick = () => {
+  const arr = items();
+  const idx = arr.findIndex(i => i.id === pendingDelete);
+  if(idx > -1){
+    undoBuffer = { item: arr[idx], idx, ws };
+    arr.splice(idx,1);
+    save(); buildChips(); render();
+    showToast("Snippet deleted", { label:"Undo", run(){
+      state[undoBuffer.ws].items.splice(undoBuffer.idx, 0, undoBuffer.item);
+      undoBuffer = null; save(); buildChips(); render();
+    }});
+  }
+  confirmDlg.close(); editDlg.close();
+};
+
+/* ── backup / restore (covers both desks) ─────────────────── */
+$("#dataBtn").onclick   = () => dataDlg.showModal();
+$("#dataClose").onclick = () => dataDlg.close();
+
+$("#exportBtn").onclick = () => {
+  const blob = new Blob([JSON.stringify({ dining: state.dining.items, rooms: state.rooms.items }, null, 2)], { type:"application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `st-clement-snippets-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast("Backup downloaded");
+};
+$("#importBtn").onclick = () => $("#fileIn").click();
+$("#fileIn").onchange = e => {
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const data = JSON.parse(r.result);
+      let added = 0;
+      const mergeInto = (deskName, incoming) => {
+        if(!Array.isArray(incoming)) return;
+        const arr = state[deskName].items;
+        const have = new Set(arr.map(i => i.text));
+        for(const s of incoming){
+          if(typeof s?.text !== "string" || have.has(s.text)) continue;
+          arr.push({ id:uid(), cat:String(s.cat || "Imported"), label:String(s.label || ""), text:s.text, fav:!!s.fav });
+          have.add(s.text); added++;
+        }
+      };
+      if(data.dining || data.rooms){ mergeInto("dining", data.dining); mergeInto("rooms", data.rooms); }
+      else mergeInto(ws, Array.isArray(data) ? data : data.items);   /* old backups land on the current desk */
+      if(added === 0 && !data.dining && !data.rooms && !Array.isArray(data) && !data.items) throw 0;
+      save(); buildChips(); render();
+      showToast(added ? `Imported ${added} snippet${added>1?"s":""}` : "Nothing new in that file");
+      dataDlg.close();
+    }catch{ showToast("That file isn't a valid snippets backup"); }
+  };
+  r.readAsText(file);
+  e.target.value = "";
+};
+$("#resetBtn").onclick = () => {
+  const backup = items().slice();
+  desk().items = seedFrom(ws === "dining" ? STARTER_DINING : STARTER_ROOMS);
+  save(); buildChips(); render(); dataDlg.close();
+  showToast(`${ws === "dining" ? "Dining" : "Rooms"} desk reset`, { label:"Undo", run(){
+    desk().items = backup; save(); buildChips(); render();
+  }});
+};
+
+/* ── search + shortcuts ───────────────────────────────────── */
+q.addEventListener("input", e => { query = e.target.value; render(); });
+
+document.addEventListener("keydown", e => {
+  if(document.querySelector("dialog[open]")) return;
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if(e.key === "/" && !typing){ e.preventDefault(); q.focus(); q.select(); }
+  if(e.key.toLowerCase() === "n" && !typing && !e.metaKey && !e.ctrlKey){ e.preventDefault(); openEdit(); }
+  if(e.key.toLowerCase() === "w" && !typing && !e.metaKey && !e.ctrlKey){ e.preventDefault(); setWs(ws === "dining" ? "rooms" : "dining", true); }
+  if(e.key === "Escape"){
+    hideToast();
+    if(document.activeElement === q){ q.value = ""; query = ""; render(); q.blur(); }
+  }
+  if(e.key === "Enter" && document.activeElement === q) grid.querySelector('[data-a="copy"]')?.click();
+});
+
+/* ── boot ─────────────────────────────────────────────────── */
+tabs.dining.setAttribute("aria-selected", ws === "dining");
+tabs.rooms.setAttribute("aria-selected", ws === "rooms");
+applyTheme(); buildChips(); render();
+save();
+if(!store.ok) showToast("Private browsing — changes won't be saved when you close this tab.");
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+[remote "marinotes"]
+	url = https://github.com/nikibestpath97/marinotes
+	fetch = +refs/heads/*:refs/remotes/marinotes/*
+[remote "origin"]
+	url = https://github.com/nikibestpath97/marinotes.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
